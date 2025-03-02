@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.aaditya.inv.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/gold_rates_page"
+            app:destination="@+id/gold_rates_page_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
+
+        <action
+            android:id="@+id/loan_application_page"
+            app:destination="@+id/loan_application_page_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
+
+        <action
+            android:id="@+id/loan_applications_views_page"
+            app:destination="@+id/loan_applications_views_page_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/sign_out"
+        android:name="com.aaditya.inv.ui.home.HomeFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/gold_rates_page_destination"
+        android:name="com.aaditya.inv.ui.dj.ManageGoldRatesFragment"
+        android:label="Manage Gold Rates"
+        tools:layout="@layout/dj_manage_gold_rate_page" />
+
+    <fragment
+        android:id="@+id/loan_application_page_destination"
+        android:name="com.aaditya.inv.ui.dj.LoanApplicationStartFragment"
+        android:label="Manage Gold Rates"
+        tools:layout="@layout/dj_loan_application_start">
+
+        <action
+            android:id="@+id/loan_application_items_page"
+            app:destination="@+id/loan_application_items_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/loan_application_items_destination"
+        android:name="com.aaditya.inv.ui.dj.LoanApplicationItemsFragment"
+        android:label="Manage Gold Rates"
+        tools:layout="@layout/dj_loan_application_items">
+
+        <action
+            android:id="@+id/loan_application_items_entry_page"
+            app:destination="@+id/loan_application_items_entry_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
+
+        <action
+            android:id="@+id/loan_application_confirm_page"
+            app:destination="@+id/loan_application_confirm_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
+
+        <action
+            android:id="@+id/loan_application_gold_rate_updates"
+            app:destination="@+id/gold_rates_page_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/loan_application_items_entry_destination"
+        android:name="com.aaditya.inv.ui.dj.LoanApplicationItemsEntryFragment"
+        android:label="Manage Gold Rates"
+        tools:layout="@layout/dj_loan_application_items_entry" />
+
+    <fragment
+        android:id="@+id/loan_application_confirm_destination"
+        android:name="com.aaditya.inv.ui.dj.LoanApplicationConfirmFragment"
+        android:label="Manage Gold Rates"
+        tools:layout="@layout/dj_loan_application_confirm">
+    </fragment>
+
+    <fragment
+        android:id="@+id/loan_applications_views_page_destination"
+        android:name="com.aaditya.inv.ui.dj.LoanApplicationViewsFragment"
+        android:label="Loan Application Views"
+        tools:layout="@layout/dj_loan_application_views">
+
+        <action
+            android:id="@+id/to_loan_application_page"
+            app:destination="@+id/loan_application_page_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
+    </fragment>
+
+</navigation>

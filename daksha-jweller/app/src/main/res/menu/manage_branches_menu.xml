@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/update_branch_status"
+        android:title="Update Status" />
+    <item android:id="@+id/update_branch_username"
+        android:title="Change Username" />
+    <item android:id="@+id/update_branch_password"
+        android:title="Change Password" />
+</menu>

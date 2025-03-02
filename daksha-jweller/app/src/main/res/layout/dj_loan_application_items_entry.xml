@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sell_purchase_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/side_nav_bar"
+    tools:context=".ui.dj.LoanApplicationItemsEntryFragment">
+
+    <FrameLayout
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="5dp"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/shape_even"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:text="Description of item"
+                    android:textColor="@color/black"
+                    android:textFontWeight="600"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/itemDescription"
+                    android:textSize="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:hint="enter item description"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/shape_even"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:text="Number of items"
+                    android:textColor="@color/black"
+                    android:textFontWeight="600"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/itemNumbers"
+                    android:textSize="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:hint="enter number of items"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/shape_even"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:text="Gross Wt."
+                    android:textColor="@color/black"
+                    android:textFontWeight="600"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/itemGrossWeight"
+                    android:textSize="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:hint="Item Gross weight"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:maxLength="10"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/shape_even"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:text="Approx Wt."
+                    android:textColor="@color/black"
+                    android:textFontWeight="600"
+                    android:textSize="14dp" />
+
+                <EditText
+                    android:id="@+id/itemApproxWeight"
+                    android:textSize="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:hint="Item approx weight"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:maxLength="10"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/shape_even"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:text="Net Wt."
+                    android:textColor="@color/black"
+                    android:textFontWeight="600"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/itemNetWeight"
+                    android:textSize="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:hint="Item Net weight"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:maxLength="10"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/shape"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:text="Purity"
+                    android:textColor="@color/black"
+                    android:textFontWeight="600"
+                    android:textSize="15dp" />
+
+                <Spinner
+                    android:id="@+id/loanApplicationPurity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
+
+                <TextView
+                    android:id="@+id/noGoldRates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
+                    android:text="No gold rated added"
+                    android:textColor="#F8A3A3"
+                    android:textFontWeight="500"
+                    android:textSize="15dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/shape"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="left"
+                    android:text="Rate"
+                    android:textColor="@color/black"
+                    android:textFontWeight="600"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/lonApplicationEntryRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:text="-"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textFontWeight="600"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/shape"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:text="Market Value"
+                    android:textColor="@color/black"
+                    android:textFontWeight="600"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/lonApplicationEntryMarketValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:text="-"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textFontWeight="600"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal"
+                android:paddingRight="5dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/backForm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_button"
+                    android:fontFamily="monospace"
+                    android:text="Back"
+                    android:textStyle="italic"
+                    android:textAllCaps="false"
+                    android:textColor="#131212" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/clearForm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_button"
+                    android:fontFamily="monospace"
+                    android:text="Clear"
+                    android:textStyle="italic"
+                    android:textAllCaps="false"
+                    android:textColor="#131212" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/saveItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/shape_button"
+                    android:fontFamily="monospace"
+                    android:text=" Save&amp;add new "
+                    android:textStyle="italic"
+                    android:textAllCaps="false"
+                    android:textColor="#131212" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+</androidx.core.widget.NestedScrollView>

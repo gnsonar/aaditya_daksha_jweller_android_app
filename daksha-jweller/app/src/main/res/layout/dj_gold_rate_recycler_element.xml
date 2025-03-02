@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_menu_items"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:forceHasOverlappingRendering="true"
+    app:cardBackgroundColor="#C1CEF3"
+    app:cardCornerRadius="2dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <EditText
+            android:id="@+id/gold_karet"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:fontFamily="monospace"
+            android:hint="Karet"
+            android:paddingLeft="5dp"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_gravity="center"
+            android:text="K"
+            android:textColor="@color/black"
+            android:textFontWeight="800"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/menu_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:paddingLeft="35dp"
+            android:layout_gravity="center"
+            android:text="Rs."
+            android:textColor="@color/black"
+            android:textFontWeight="800"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/gold_rate"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:fontFamily="monospace"
+            android:hint="Rate"
+            android:paddingLeft="5dp"
+            android:inputType="numberDecimal" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/delete_rate"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@android:drawable/ic_delete"
+            android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
+
+
