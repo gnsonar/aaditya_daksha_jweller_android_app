@@ -26,12 +26,14 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
             Constants.SQLiteDatabase.GOLD_RATES_KARAT_COLUMN + " FLOAT," +
             Constants.SQLiteDatabase.GOLD_RATES_RATE_COLUMN + " FLOAT," +
             Constants.SQLiteDatabase.GOLD_RATES_BANK_COLUMN + " TEXT," +
+            Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE + " TEXT," +
             Constants.SQLiteDatabase.GOLD_RATES_TIMESTAMP_COLUMN + " TIMESTAMP)";
 
     private static final String SQL_CREATE_GOLD_RATES_AUDIT = "CREATE TABLE " + Constants.SQLiteDatabase.TABLE_GOLD_RATES_AUDIT + " (" +
             Constants.SQLiteDatabase.GOLD_RATES_KARAT_COLUMN + " FLOAT," +
             Constants.SQLiteDatabase.GOLD_RATES_RATE_COLUMN + " FLOAT," +
             Constants.SQLiteDatabase.GOLD_RATES_BANK_COLUMN + " TEXT," +
+            Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE + " TEXT," +
             Constants.SQLiteDatabase.GOLD_RATES_TIMESTAMP_COLUMN + " TIMESTAMP)";
 
     private static final String SQL_CREATE_LOAN_APPLICATIONS = "CREATE TABLE " + Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION + " (" +

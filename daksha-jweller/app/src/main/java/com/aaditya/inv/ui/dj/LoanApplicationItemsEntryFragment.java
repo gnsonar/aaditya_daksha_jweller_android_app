@@ -57,7 +57,8 @@ public class LoanApplicationItemsEntryFragment extends Fragment {
 
         SQLiteDatabase db = sqlLite.getReadableDatabase();
         SQLiteDatabase db1 = sqlLite.getWritableDatabase();
-        Cursor cursor = db.query(Constants.SQLiteDatabase.TABLE_GOLD_RATES, null, "bank = ?", new String[]{InMemoryInfo.customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK)}, null, null, null, null);
+        Cursor cursor = db.query(Constants.SQLiteDatabase.TABLE_GOLD_RATES, null, "bank = ? and " + Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE + " = ?", new String[]{InMemoryInfo.customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK),
+                InMemoryInfo.customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE)}, null, null, null, null);
 
         List<String> karatList = new ArrayList<>();
         List<Map<String, String>> rateKaratList = new ArrayList<>();

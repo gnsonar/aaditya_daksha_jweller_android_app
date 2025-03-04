@@ -70,6 +70,7 @@ public class LoanApplicationStartFragment extends Fragment {
         if(loanId != null) {
             binding.loanApplicationPageNo.setText(loanId);
             binding.loanApplicationBanks.setEnabled(false);
+            binding.loanApplicationType.setEnabled(false);
             cursor = db.query(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION, null, "id = ?", new String[]{loanId}, null, null, null, null);
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -78,7 +79,6 @@ public class LoanApplicationStartFragment extends Fragment {
                 binding.customerMobile.setText(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_MOBILE_NO)));
                 binding.customerBankAcc.setText(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_ACC_NO)));
                 binding.jointCustody.setText(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_JOINT_CUSTODY)));
-                binding.customerLoanAmount.setText(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT)));
                 binding.loanApplicationBagNo.setText(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_BAG_PACKET_NO)));
                 binding.customerPhoto.setVisibility(View.VISIBLE);
                 binding.customerPhoto.setImageURI(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_PHOTO))));
@@ -142,7 +142,6 @@ public class LoanApplicationStartFragment extends Fragment {
                             binding.customerBankName.getText().toString() : binding.customerBankAccName.getSelectedItem().toString());
                     customerDetails.put(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK, binding.loanApplicationBanks.getSelectedItem().toString());
                     customerDetails.put(Constants.SQLiteDatabase.BANK_LOAN_APP_JOINT_CUSTODY, binding.jointCustody.getText().toString());
-                    customerDetails.put(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT, binding.customerLoanAmount.getText().toString());
                     customerDetails.put(Constants.SQLiteDatabase.BANK_LOAN_APP_BAG_PACKET_NO, binding.loanApplicationBagNo.getText().toString());
                     customerDetails.put(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE, binding.loanApplicationType.getSelectedItem().toString());
 
@@ -214,9 +213,6 @@ public class LoanApplicationStartFragment extends Fragment {
         if(binding.customerPhoto.getVisibility() == View.GONE) {
             Toast.makeText(getContext(), "upload customer photo", Toast.LENGTH_SHORT).show();
         }
-        if(binding.customerLoanAmount.getText().toString().trim().contentEquals("")) {
-            binding.customerLoanAmount.setError("enter customer loan amount");
-        }
         if(binding.loanApplicationBagNo.getText().toString().trim().contentEquals("")) {
             binding.loanApplicationBagNo.setError("enter bag / packet number");
         }
@@ -229,8 +225,7 @@ public class LoanApplicationStartFragment extends Fragment {
         return binding.customerName.getError() == null && binding.customerAddress.getError() == null &&
                 binding.customerMobile.getError() == null && binding.customerBankAcc.getError() == null &&
                 binding.customerBankName.getError() == null && binding.jointCustody.getError() == null &&
-                binding.customerLoanAmount.getError() == null && binding.customerPhoto.getVisibility() != View.GONE &&
-                binding.loanApplicationPageNoEdit.getError() == null;
+                binding.customerPhoto.getVisibility() != View.GONE && binding.loanApplicationPageNoEdit.getError() == null;
     }
 
     private void clearForm() {

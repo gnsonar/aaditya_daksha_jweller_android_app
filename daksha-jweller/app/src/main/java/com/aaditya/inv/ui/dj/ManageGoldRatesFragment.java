@@ -68,13 +68,27 @@ public class ManageGoldRatesFragment extends Fragment {
         binding.goldRateRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.goldRateRecyclerView.setAdapter(goldRatesItems);
 
-        Commons.fetchGoldRates(goldRatesItems, db, binding.rateBanks, rateList, binding.goldRateSection, binding.goldRateAddMessage);
+        binding.loanTypes.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, InMemoryInfo.loanTypes));
+
+        Commons.fetchGoldRates(goldRatesItems, db, binding.rateBanks, binding.loanTypes, rateList, binding.goldRateSection, binding.goldRateAddMessage);
 
         binding.rateBanks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 rateList.clear();
-                Commons.fetchGoldRates(goldRatesItems, db, binding.rateBanks, rateList, binding.goldRateSection, binding.goldRateAddMessage);
+                Commons.fetchGoldRates(goldRatesItems, db, binding.rateBanks, binding.loanTypes, rateList, binding.goldRateSection, binding.goldRateAddMessage);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        binding.loanTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                rateList.clear();
+                Commons.fetchGoldRates(goldRatesItems, db, binding.rateBanks, binding.loanTypes, rateList, binding.goldRateSection, binding.goldRateAddMessage);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -128,12 +142,12 @@ public class ManageGoldRatesFragment extends Fragment {
                     }
                     if(validateRateList(rateList, newRateList)) {
                         SQLiteDatabase db1 = sqlLite.getWritableDatabase();
-                        db1.execSQL(MessageFormat.format(SQLConstants.AUDIT_RATES_TABLE, binding.rateBanks.getSelectedItem().toString()));
-                        db1.execSQL(MessageFormat.format(SQLConstants.TRUNCATE_RATE_TABLE, binding.rateBanks.getSelectedItem().toString()));
+                        db1.execSQL(MessageFormat.format(SQLConstants.AUDIT_RATES_TABLE, binding.rateBanks.getSelectedItem().toString(), binding.loanTypes.getSelectedItem().toString()));
+                        db1.execSQL(MessageFormat.format(SQLConstants.TRUNCATE_RATE_TABLE, binding.rateBanks.getSelectedItem().toString(), binding.loanTypes.getSelectedItem().toString()));
 
                         LocalDateTime timestamp = LocalDateTime.now();
                         for (int i = 0; i < newRateList.size(); i++) {
-                            db1.execSQL(MessageFormat.format(SQLConstants.INSERT_RATE, newRateList.get(i)[0], newRateList.get(i)[1].toString(), binding.rateBanks.getSelectedItem().toString(), timestamp));
+                            db1.execSQL(MessageFormat.format(SQLConstants.INSERT_RATE, newRateList.get(i)[0], newRateList.get(i)[1].toString(), binding.rateBanks.getSelectedItem().toString(), binding.loanTypes.getSelectedItem().toString(), timestamp));
                         }
                         Toast.makeText(getContext(), "New Rates Saved", Toast.LENGTH_SHORT).show();
                     }

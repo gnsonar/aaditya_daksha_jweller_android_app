@@ -49,27 +49,48 @@ public class GoldRatesDialogFragment extends Dialog {
         RecyclerView goldRates =  dialogView.findViewById(R.id.gold_rate_display_recycler_view);
         AppCompatButton button = dialogView.findViewById(R.id.updatesGoldRates);
         Spinner rateBanks = dialogView.findViewById(R.id.gold_rate_display_bank);
+        Spinner loanTypes = dialogView.findViewById(R.id.gold_rate_display_loan_type);
+
 
         List<Float[]> rateList = new ArrayList<>();
         rateBanks.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, InMemoryInfo.loanBankList));
+        loanTypes.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, InMemoryInfo.loanTypes));
+
+        rateBanks.setEnabled(false);
+        loanTypes.setEnabled(false);
+
+        rateBanks.setSelection(InMemoryInfo.loanBankList.indexOf(InMemoryInfo.customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK)));
+        loanTypes.setSelection(InMemoryInfo.loanTypes.indexOf(InMemoryInfo.customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE)));
 
         RecyclerView.Adapter goldRatesItems = new RecyclerViewAdapterGoldRatesView(rateList);
         goldRates.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         goldRates.setAdapter(goldRatesItems);
 
-        String lastUpdates = Commons.fetchGoldRates(goldRatesItems, db, rateBanks, rateList, dialogView.findViewById(R.id.gold_rate_section), noGoldRates);
+        String lastUpdates = Commons.fetchGoldRates(goldRatesItems, db, rateBanks, loanTypes, rateList, dialogView.findViewById(R.id.gold_rate_section), noGoldRates);
 
-        rateBanks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+       /* rateBanks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 rateList.clear();
-                Commons.fetchGoldRates(goldRatesItems, db, rateBanks, rateList, dialogView.findViewById(R.id.gold_rate_section), noGoldRates);
+                Commons.fetchGoldRates(goldRatesItems, db, rateBanks, loanTypes, rateList, dialogView.findViewById(R.id.gold_rate_section), noGoldRates);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
+
+        loanTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                rateList.clear();
+                Commons.fetchGoldRates(goldRatesItems, db, rateBanks, loanTypes, rateList, dialogView.findViewById(R.id.gold_rate_section), noGoldRates);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });*/
 
         button.setOnClickListener(view -> {
             InMemoryInfo.updateGoldRate = true;

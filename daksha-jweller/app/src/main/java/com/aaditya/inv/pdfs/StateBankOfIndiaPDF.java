@@ -66,6 +66,13 @@ public class StateBankOfIndiaPDF {
             PdfWriter.getInstance(document, new FileOutputStream(file));
             document.open();
 
+            font10Size.setStyle(Font.ITALIC);
+            document.add(getHeadingParagraph("DAKSHA JEWELLERS", new Font(extraBold, 20), Element.ALIGN_CENTER));
+            document.add(getHeadingParagraph("Gandhi Market, Balaji Road, Shirpur", font10Size, Element.ALIGN_CENTER));
+            document.add(getHeadingParagraph("Tal Shirpur, Dist Dhule, 425 405", font10Size, Element.ALIGN_CENTER));
+            font10Size.setStyle(Font.NORMAL);
+            document.add(new Paragraph(" "));
+            document.add(new Paragraph(" "));
             // Heading
             font10Size.setStyle(Font.ITALIC);
             document.add(getHeadingParagraph("APPRAISER CERTIFICATE", extraBold18Size, Element.ALIGN_CENTER));

@@ -80,13 +80,12 @@ public class HomeFragment extends Fragment {
         db = sqlLite.getReadableDatabase();
 
         String androidId = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
-        binding.androidId.setText("Android Id: " + androidId);
 
         if(LocalDateTime.now().isAfter(InMemoryInfo.expiryDateTime)) {
             Commons.showAlertBox(getContext(), "Expired you can't use this app anymore", "Application Error", true);
         }
-        /*if(androidId == null || !androidId.contentEquals(InMemoryInfo.androidID))
-            Commons.showAlertBox(getContext(), "This mobile not registered", "Application Error", true);*/
+        if(androidId == null || !InMemoryInfo.androidIDUs.contains(androidId))
+            Commons.showAlertBox(getContext(), "This mobile not registered", "Application Error", true);
 
         List<HomeMenuModel> mainMenu = new ArrayList<>();
         mainMenu.add(new HomeMenuModel("Gold rates",  "Add or update gold rates", ContextCompat.getDrawable(getContext(), R.drawable.purchase)));

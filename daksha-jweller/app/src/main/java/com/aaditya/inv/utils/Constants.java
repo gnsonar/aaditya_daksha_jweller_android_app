@@ -13,6 +13,7 @@ public interface Constants {
     List<String> RATE_DATA_COLUMNS = Arrays.asList(SQLiteDatabase.GOLD_RATES_RATE_COLUMN,
             SQLiteDatabase.GOLD_RATES_KARAT_COLUMN,
             SQLiteDatabase.GOLD_RATES_BANK_COLUMN,
+            SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE,
             SQLiteDatabase.GOLD_RATES_TIMESTAMP_COLUMN);
 
     List<String> LOAN_APPS_COLUMNS = Arrays.asList(SQLiteDatabase.BANK_LOAN_APP_ID,

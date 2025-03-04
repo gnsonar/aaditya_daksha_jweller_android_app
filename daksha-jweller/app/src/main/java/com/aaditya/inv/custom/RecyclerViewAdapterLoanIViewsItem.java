@@ -20,9 +20,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aaditya.inv.R;
+import com.aaditya.inv.db.SQLConstants;
 import com.aaditya.inv.utils.Commons;
 import com.aaditya.inv.utils.Constants;
+import com.aaditya.inv.utils.InMemoryInfo;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +56,8 @@ public class RecyclerViewAdapterLoanIViewsItem extends RecyclerView.Adapter<Recy
         viewHolder.packageNo.setText(loanApplications.get(i).get(Constants.SQLiteDatabase.BANK_LOAN_APP_ID));
         viewHolder.totalItems.setText(loanApplications.get(i).get(Constants.SQLiteDatabase.LOAN_APPLICATION_TOTAL_ITEM));
         viewHolder.totalAmount.setText(Commons.convertNumberToINFormat(loanApplications.get(i).get(Constants.SQLiteDatabase.LOAN_APPLICATION_TOTAL_AMOUNT)));
+        viewHolder.totalNetWt.setText(loanApplications.get(i).get(Constants.SQLiteDatabase.LOAN_APPLICATION_TOTAL_NET_WT));
+        viewHolder.totalGrossWt.setText(loanApplications.get(i).get(Constants.SQLiteDatabase.LOAN_APPLICATION_TOTAL_GROSS_WT));
 
         if(loanApplications.get(i).get(Constants.SQLiteDatabase.LOAN_APPLICATION_SHOW_GEN_FORM).contentEquals("true")) {
             viewHolder.pdfGenerate.setVisibility(View.VISIBLE);
@@ -77,6 +83,23 @@ public class RecyclerViewAdapterLoanIViewsItem extends RecyclerView.Adapter<Recy
                 Toast.makeText(view.getContext(), Constants.ERROR_MESSAGE, Toast.LENGTH_SHORT).show();
             }
         });
+
+        viewHolder.deleteApplication.setOnClickListener(view -> {
+            new MaterialAlertDialogBuilder(context)
+                    .setTitle("Delete confirmation")
+                    .setMessage("Do you want to delete this application?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (v1, v2) -> {
+                        db.delete(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION, "id = ?", new String[]{loanApplications.get(i).get(Constants.SQLiteDatabase.BANK_LOAN_APP_ID)});
+                        db.delete(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION_ITEMS, "loan_id = ?", new String[]{loanApplications.get(i).get(Constants.SQLiteDatabase.BANK_LOAN_APP_ID)});
+                        Toast.makeText(context, "Loan application deleted", Toast.LENGTH_SHORT).show();
+                        loanApplications.remove(i);
+                        notifyDataSetChanged();
+                    })
+                    .setNegativeButton("No", (v1, v2) -> v1.dismiss())
+                    .show();
+
+        });
     }
 
     @Override
@@ -90,7 +113,10 @@ public class RecyclerViewAdapterLoanIViewsItem extends RecyclerView.Adapter<Recy
         public TextView packageNo;
         public TextView totalItems;
         public TextView totalAmount;
+        public TextView totalNetWt;
+        public TextView totalGrossWt;
         public ImageView pdfGenerate;
+        public ImageView deleteApplication;
         public ImageView loan_applications_edit_application;
         public ViewHolder(View view) {
             super(view);
@@ -98,8 +124,11 @@ public class RecyclerViewAdapterLoanIViewsItem extends RecyclerView.Adapter<Recy
             loanBank = view.findViewById(R.id.loan_application_views_bank_name);
             totalItems = view.findViewById(R.id.loan_application_views_total_items);
             totalAmount = view.findViewById(R.id.loan_application_views_total_amount);
+            totalNetWt = view.findViewById(R.id.loan_application_views_total_net_wt);
+            totalGrossWt = view.findViewById(R.id.loan_application_views_total_gross_wt);
             packageNo = view.findViewById(R.id.loan_application_views_package_no);
             pdfGenerate = view.findViewById(R.id.loan_applications_form_download);
+            deleteApplication = view.findViewById(R.id.loan_applications_delete_application);
             loan_applications_edit_application = view.findViewById(R.id.loan_applications_edit_application);
         }
     }

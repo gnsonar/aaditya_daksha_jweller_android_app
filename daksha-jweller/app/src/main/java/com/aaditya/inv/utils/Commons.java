@@ -248,11 +248,11 @@ public class Commons {
         return filePath.substring(filePath.lastIndexOf('/') + 1);
     }
 
-    public static String fetchGoldRates(RecyclerView.Adapter goldRatesItems, SQLiteDatabase db, Spinner rateBanks, List<Float[]> rateList, LinearLayout goldRates, LinearLayout noGoldRates) {
+    public static String fetchGoldRates(RecyclerView.Adapter goldRatesItems, SQLiteDatabase db, Spinner rateBanks, Spinner loanTypes, List<Float[]> rateList, LinearLayout goldRates, LinearLayout noGoldRates) {
         Cursor cursor = null;
         String lastUpdate = null;
         try {
-            cursor = db.query(Constants.SQLiteDatabase.TABLE_GOLD_RATES, null, "bank = ?", new String[]{rateBanks.getSelectedItem().toString()}, null, null, null, null);
+            cursor = db.query(Constants.SQLiteDatabase.TABLE_GOLD_RATES, null, "bank = ? and loan_type = ?", new String[]{rateBanks.getSelectedItem().toString(), loanTypes.getSelectedItem().toString()}, null, null, null, null);
             if(cursor.getCount() > 0) {
                 goldRates.setVisibility(View.VISIBLE);
                 noGoldRates.setVisibility(View.GONE);

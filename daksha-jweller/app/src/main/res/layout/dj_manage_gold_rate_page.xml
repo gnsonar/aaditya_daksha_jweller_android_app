@@ -12,27 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/loading_gears"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:layout_marginStart="128dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="120dp"
-            android:layout_marginBottom="32dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/container"
-            app:layout_constraintEnd_toStartOf="@+id/container"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container"
-            app:layout_constraintVertical_bias="0.56"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/loading_gears"
-            tools:ignore="MissingConstraints" />
 
         <LinearLayout
             android:id="@+id/container"
@@ -120,32 +99,58 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="3dp"
                 android:orientation="horizontal"
                 android:paddingLeft="5dp"
-                android:background="@drawable/shape"
-                android:paddingTop="10dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="5dp">
+                android:paddingRight="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:fontFamily="monospace"
                     android:gravity="center|left"
-                    android:text="Bank : "
+                    android:text="Bank:"
                     android:textColor="@color/black"
                     android:textFontWeight="600"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Spinner
                     android:id="@+id/rateBanks"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center|left"
+                    android:gravity="left"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp" />
+                    android:paddingRight="5dp"
+                    android:textSize="14dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="monospace"
+                    android:gravity="center|left"
+                    android:text="Loan Type:"
+                    android:textColor="@color/black"
+                    android:textFontWeight="600"
+                    android:textSize="14dp" />
+
+                <Spinner
+                    android:id="@+id/loanTypes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textSize="14dp"/>
 
             </LinearLayout>
 
@@ -153,7 +158,6 @@
                 android:id="@+id/gold_rate_section"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"

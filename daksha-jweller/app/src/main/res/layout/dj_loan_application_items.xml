@@ -176,6 +176,36 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="monospace"
+                        android:gravity="center|left"
+                        android:text="Loan Amount"
+                        android:textColor="@color/black"
+                        android:textFontWeight="600"
+                        android:textSize="15dp" />
+
+                    <EditText
+                        android:id="@+id/customerLoanAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:maxLines="3"
+                        android:fontFamily="monospace"
+                        android:hint="Loan Amount"
+                        android:textSize="15dp"
+                        android:ems="10"
+                        android:inputType="numberDecimal" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

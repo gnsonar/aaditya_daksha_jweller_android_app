@@ -60,7 +60,7 @@ public class BankOfBarodaPDF {
 
             // Heading
             font10Size.setStyle(Font.ITALIC);
-            document.add(getHeadingParagraph("TANISHAKA JEWELLERS", new Font(extraBold, 20), Element.ALIGN_CENTER));
+            document.add(getHeadingParagraph("DAKSHA JEWELLERS", new Font(extraBold, 20), Element.ALIGN_CENTER));
             document.add(getHeadingParagraph("Gandhi Market, Balaji Road, Shirpur", font10Size, Element.ALIGN_CENTER));
             document.add(getHeadingParagraph("Tal Shirpur, Dist Dhule, 425 405", font10Size, Element.ALIGN_CENTER));
             font10Size.setStyle(Font.NORMAL);
