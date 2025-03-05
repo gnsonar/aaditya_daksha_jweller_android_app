@@ -92,6 +92,7 @@ public class LoanApplicationViewsFragment extends Fragment {
             try {
                 Commons.downloadConsolidatedReport(getContext(), loanApplications);
             } catch (Exception e) {
+                e.printStackTrace();
                 Toast.makeText(getContext(), "Error in generating report", Toast.LENGTH_SHORT).show();
             }
         });

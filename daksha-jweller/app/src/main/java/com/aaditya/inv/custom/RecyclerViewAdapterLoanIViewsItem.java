@@ -62,6 +62,11 @@ public class RecyclerViewAdapterLoanIViewsItem extends RecyclerView.Adapter<Recy
         if(loanApplications.get(i).get(Constants.SQLiteDatabase.LOAN_APPLICATION_SHOW_GEN_FORM).contentEquals("true")) {
             viewHolder.pdfGenerate.setVisibility(View.VISIBLE);
             viewHolder.pdfGenerate.setOnClickListener(view -> {
+                if(loanApplications.get(i).get(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT) == null ||
+                        loanApplications.get(i).get(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT).trim().isEmpty()) {
+                    Toast.makeText(context, "No Loan amount updated", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 try {
                     Cursor cursorLoan = db.query(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION, null, "id = ?", new String[]{ loanApplications.get(i).get(Constants.SQLiteDatabase.BANK_LOAN_APP_ID) }, null, null, null, null);
                     Cursor cursorItems = db.query(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION_ITEMS, null, "loan_id = ?", new String[]{ loanApplications.get(i).get(Constants.SQLiteDatabase.BANK_LOAN_APP_ID) }, null, null, null, null);

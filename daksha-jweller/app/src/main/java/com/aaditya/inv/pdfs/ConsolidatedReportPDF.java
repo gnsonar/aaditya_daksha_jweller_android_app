@@ -82,7 +82,9 @@ public class ConsolidatedReportPDF {
                         loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_MOBILE_NO),
                         loanApplication.get(Constants.SQLiteDatabase.LOAN_APPLICATION_TOTAL_GROSS_WT),
                         loanApplication.get(Constants.SQLiteDatabase.LOAN_APPLICATION_TOTAL_NET_WT),
-                        Commons.convertNumberToINFormat(loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT))), font10AccNoSize);
+                        loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT) != null &&
+                                !loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT).trim().isEmpty() ?
+                                Commons.convertNumberToINFormat(loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT)) : "Not Updated"), font10AccNoSize);
 
                 srNo++;
             }
@@ -97,7 +99,6 @@ public class ConsolidatedReportPDF {
     private static void addHeaderElementToTable(PdfPTable itemsTable, List<String> list, Font font) {
 
         list.stream().forEach(column -> {
-            String[] columns = column.split(",");
             PdfPCell cell = new PdfPCell();
             Paragraph p = new Paragraph(column, font);
             p.setAlignment(Element.ALIGN_CENTER);

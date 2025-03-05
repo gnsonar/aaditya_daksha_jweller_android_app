@@ -203,6 +203,9 @@ public class LoanApplicationStartFragment extends Fragment {
         if(binding.customerMobile.getText().toString().trim().contentEquals("")) {
             binding.customerMobile.setError("enter customer mobile no");
         }
+        if(binding.customerMobile.getError() == null && binding.customerMobile.getText().toString().trim().length() < 10) {
+            binding.customerMobile.setError("enter valid mobile no");
+        }
         if(binding.customerBankAcc.getText().toString().trim().contentEquals("")) {
             binding.customerBankAcc.setError("enter customer account number");
         }

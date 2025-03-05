@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,6 +133,24 @@ public class LoanApplicationItemsFragment extends Fragment {
             });
         }));
 
+        binding.customerLoanAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                ContentValues values = new ContentValues();
+                values.put(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT, binding.customerLoanAmount.getText().toString().trim());
+                db.update(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION, values, "id = ?", new String[]{String.valueOf(loanId)});
+            }
+        });
         binding.generateForm.setOnClickListener((view -> {
             if(itemList.isEmpty()) {
                 Toast.makeText(getContext(), "No Items added", Toast.LENGTH_SHORT).show();
@@ -141,11 +161,6 @@ public class LoanApplicationItemsFragment extends Fragment {
                 return;
             }
             try {
-                ContentValues values = new ContentValues();
-                values.put(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT, binding.customerLoanAmount.getText().toString());
-                db.update(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION, values, "id = ?", new String[]{String.valueOf(loanId)});
-
-
                 Cursor cursorLoan = db.query(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION, null, "id = ?", new String[]{String.valueOf(loanId)}, null, null, null, null);
                 Cursor cursorItems = db.query(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION_ITEMS, null, "loan_id = ?", new String[]{String.valueOf(loanId)}, null, null, null, null);
                 Commons.createAndDownloadForm(getContext(), cursorLoan, cursorItems);
