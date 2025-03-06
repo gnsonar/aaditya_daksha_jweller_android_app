@@ -36,10 +36,9 @@ public class StateBankOfIndiaPDF {
         String packetNo = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_ID));
         String date = LocalDateTime.parse(loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.CREATED_AT))).format(DateTimeFormatter.ofPattern("dd/MM/YYYY"));
         String imagePathItems = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_PACKET_PHOTO));
-
+        String jointCustody = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_JOINT_CUSTODY));
 
         String swdName = "";
-        String cashInCharge = "";
 
         String dottedLines = "..................";
         Document document = new Document();
@@ -87,7 +86,12 @@ public class StateBankOfIndiaPDF {
                     "I hereby certify that Shri/Smt...........{0}........... S/W/D of...........{1}........... Resident of...........{2}........... who has sought gold Loan " +
                     "from the Bank is not my relative and gold loan against which the loan sought is not purchased from me. The ornaments/Coins have been weighted and appraised " +
                     "by me on...........{3}...........in the presence of Shri/Smt...........{4}........... (Cash in charge) and the exact weight, purity of the metal and market value " +
-                    "of each item as on date indicated. \nbelow:", name, swdName.isEmpty() ? dottedLines : swdName, address, "", cashInCharge.isEmpty() ? dottedLines : cashInCharge), font10Size, Element.ALIGN_LEFT));
+                    "of each item as on date indicated. \nbelow:",
+                    name,
+                    swdName.isEmpty() ? dottedLines : swdName,
+                    address,
+                    "",
+                    jointCustody == null && jointCustody.isEmpty() ? dottedLines : jointCustody), font10Size, Element.ALIGN_LEFT));
 
             // add Header to items table
             PdfPTable itemsTable = new PdfPTable(7);
