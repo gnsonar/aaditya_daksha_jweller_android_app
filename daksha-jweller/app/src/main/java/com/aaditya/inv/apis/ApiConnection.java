@@ -2,34 +2,18 @@ package com.aaditya.inv.apis;
 
 import com.aaditya.inv.utils.Commons;
 import com.aaditya.inv.utils.Constants;
-import com.aaditya.inv.utils.InMemoryInfo;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.classic.methods.HttpPut;
-import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
-import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
+
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.HttpResponse;
-import org.apache.hc.core5.http.io.entity.BufferedHttpEntity;
-import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.apache.hc.core5.http.message.BasicNameValuePair;
-import org.apache.hc.core5.http.message.BufferedHeader;
 
-import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
 import java.util.Map;
 
 public final class ApiConnection {
@@ -49,32 +33,7 @@ public final class ApiConnection {
 
     public CloseableHttpResponse callPostAPI(String path, Map<String, String> params, Map<String, Object> body) throws IOException {
         HttpPost post = new HttpPost(Constants.APIS_CONSTANTS.API_HOST + Commons.appendUrlParams(path, params));
-        post.setEntity(new StringEntity(Commons.gson.toJson(body), ContentType.APPLICATION_JSON));
-        return client.execute(post);
-    }
-
-    public CloseableHttpResponse uploadFile(String path, Map<String, String> params, byte[] file) throws IOException {
-        HttpPost post = new HttpPost(Constants.APIS_CONSTANTS.API_HOST + Commons.appendUrlParams(path, params));
-        File tempFile = File.createTempFile("tracation", ".jpeg", null);
-        FileOutputStream fos = new FileOutputStream(tempFile);
-        fos.write(file);
-        HttpEntity entity = MultipartEntityBuilder
-                .create()
-                .addBinaryBody("file", tempFile, ContentType.APPLICATION_OCTET_STREAM, "image")
-                .build();
-        post.setEntity(entity);
-        return client.execute(post);
-    }
-
-    public CloseableHttpResponse callPutAPI(String path, Map<String, String> params, Map<String, Object> body) throws IOException {
-        HttpPut post = new HttpPut(Constants.APIS_CONSTANTS.API_HOST + Commons.appendUrlParams(path, params));
-        post.setEntity(new StringEntity(Commons.gson.toJson(body), ContentType.APPLICATION_JSON));
-        return client.execute(post);
-    }
-
-    public CloseableHttpResponse callDeleteAPI(String path, Map<String, String> params, Map<String, Object> body) throws IOException {
-        HttpDelete post = new HttpDelete(Constants.APIS_CONSTANTS.API_HOST + Commons.appendUrlParams(path, params));
-        post.setEntity(new StringEntity(Commons.gson.toJson(body), ContentType.APPLICATION_JSON));
+        post.setEntity(new StringEntity(Commons.gson.toJson(body), ContentType.TEXT_PLAIN));
         return client.execute(post);
     }
 }

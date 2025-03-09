@@ -1,18 +1,15 @@
 package com.aaditya.inv.ui.home;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -33,21 +30,14 @@ import com.aaditya.inv.models.HomeMenuModel;
 import com.aaditya.inv.utils.Commons;
 import com.aaditya.inv.utils.Constants;
 import com.aaditya.inv.utils.InMemoryInfo;
-import com.airbnb.lottie.L;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +69,7 @@ public class HomeFragment extends Fragment {
         final SQLiteDatabaseHelper sqlLite = new SQLiteDatabaseHelper(getContext());
         db = sqlLite.getReadableDatabase();
 
-        String androidId = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
+        @SuppressLint("HardwareIds") String androidId = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         if(LocalDateTime.now().isAfter(InMemoryInfo.expiryDateTime)) {
             Commons.showAlertBox(getContext(), "Expired you can't use this app anymore", "Application Error", true);
@@ -93,7 +83,7 @@ public class HomeFragment extends Fragment {
         mainMenu.add(new HomeMenuModel("View Loan Applications",  "view all loan applications", ContextCompat.getDrawable(getContext(), R.drawable.paymententries)));
 
         InMemoryInfo.loanAppSearchObject = null;
-        RecyclerView.Adapter mainMenuItems = new RecyclerViewAdapterHomeScreen(mainMenu, getContext(), getActivity());
+        RecyclerView.Adapter<RecyclerViewAdapterHomeScreen.ViewHolder> mainMenuItems = new RecyclerViewAdapterHomeScreen(mainMenu, getContext(), getActivity());
         RecyclerView recyclerView = binding.homeMenus;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mainMenuItems);
@@ -110,12 +100,14 @@ public class HomeFragment extends Fragment {
             cursor = db.query(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION,null, null, null, null, null, null, null);
             readCursorRecords(cursor, exportData, Constants.LOAN_APPS_DATA, Constants.LOAN_APPS_COLUMNS);
 
-            for(Map<String, Object> loanApplication : (List<Map<String, Object>>) exportData.get("loanApplications")) {
-                if(loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_PHOTO) != null) {
-                    loanApplication.put(Constants.BANK_LOAN_APP_PHOTO_CONTENT, Commons.getByteFileContent(loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_PHOTO).toString()));
-                }
-                if(loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_PACKET_PHOTO) != null) {
-                    loanApplication.put(Constants.BANK_LOAN_APP_PACKET_PHOTO_CONTENT, Commons.getByteFileContent(loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_PACKET_PHOTO).toString()));
+            if(exportData.containsKey(Constants.LOAN_APPS_DATA) && exportData.get(Constants.LOAN_APPS_DATA) != null ) {
+                for(Map<String, Object> loanApplication : (List<Map<String, Object>>) exportData.get(Constants.LOAN_APPS_DATA)) {
+                    if(loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_PHOTO) != null) {
+                        loanApplication.put(Constants.BANK_LOAN_APP_PHOTO_CONTENT, Commons.getByteFileContent(loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_PHOTO).toString()));
+                    }
+                    if(loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_PACKET_PHOTO) != null) {
+                        loanApplication.put(Constants.BANK_LOAN_APP_PACKET_PHOTO_CONTENT, Commons.getByteFileContent(loanApplication.get(Constants.SQLiteDatabase.BANK_LOAN_APP_PACKET_PHOTO).toString()));
+                    }
                 }
             }
             cursor = db.query(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION_ITEMS,null, null, null, null, null, null, null);
@@ -210,7 +202,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void readCursorRecords(Cursor cursor, Map<String, Object> exportData, String dataSet, List<String> fields) {
-        if(cursor.getCount() > 0) {
+        if(cursor != null && cursor.getCount() > 0) {
             List<Map<String, Object>> rateList = new ArrayList<>();
             while (cursor.moveToNext()) {
                 final Map<String, Object> rateData = new HashMap<>();

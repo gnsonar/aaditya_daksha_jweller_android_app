@@ -29,7 +29,11 @@ import com.aaditya.inv.utils.InMemoryInfo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class LoanApplicationStartFragment extends Fragment {
     private DjLoanApplicationStartBinding binding;
@@ -49,14 +53,16 @@ public class LoanApplicationStartFragment extends Fragment {
 
         String loanId = bundle != null ? bundle.getString(Constants.LOAN_OBJECT) : null;
 
+        Map<String, String> existingData = new HashMap<>();
+
         if(loanId == null)
             clearForm();
 
         SQLiteDatabase db = sqlLite.getReadableDatabase();
         SQLiteDatabase db1 = sqlLite.getWritableDatabase();
         Cursor cursor = db.query(Constants.SQLiteDatabase.TABLE_BANK_DETAILS, null, null, null, null, null, null, null);
-        binding.loanApplicationBanks.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, InMemoryInfo.loanBankList));
-        binding.loanApplicationType.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, InMemoryInfo.loanTypes));
+        binding.loanApplicationBanks.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, InMemoryInfo.loanBankList));
+        binding.loanApplicationType.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, InMemoryInfo.loanTypes));
 
         List<String> bankList = new ArrayList<>();
         if(cursor.getCount() > 0) {
@@ -64,13 +70,11 @@ public class LoanApplicationStartFragment extends Fragment {
                 bankList.add(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_DETAILS_NAME)));
             }
             bankList.add("Other");
-            binding.customerBankAccName.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, bankList));
+            binding.customerBankAccName.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, bankList));
         }
-
+        cursor.close();
         if(loanId != null) {
             binding.loanApplicationPageNo.setText(loanId);
-            binding.loanApplicationBanks.setEnabled(false);
-            binding.loanApplicationType.setEnabled(false);
             cursor = db.query(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION, null, "id = ?", new String[]{loanId}, null, null, null, null);
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -80,10 +84,17 @@ public class LoanApplicationStartFragment extends Fragment {
                 binding.customerBankAcc.setText(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_ACC_NO)));
                 binding.jointCustody.setText(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_JOINT_CUSTODY)));
                 binding.loanApplicationBagNo.setText(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_BAG_PACKET_NO)));
-                binding.customerPhoto.setVisibility(View.VISIBLE);
-                binding.customerPhoto.setImageURI(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_PHOTO))));
+
+                var customerPhoto = cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_PHOTO));
+                if(!customerPhoto.isEmpty()) {
+                    binding.customerPhoto.setVisibility(View.VISIBLE);
+                    binding.customerPhoto.setImageURI(Uri.parse(customerPhoto));
+                }
                 binding.loanApplicationBanks.setSelection(InMemoryInfo.loanBankList.indexOf(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK))));
                 binding.loanApplicationType.setSelection(InMemoryInfo.loanTypes.indexOf(cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE))));
+
+                existingData.put(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK, binding.loanApplicationBanks.getSelectedItem().toString());
+                existingData.put(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE, binding.loanApplicationType.getSelectedItem().toString());
 
                 binding.loanApplicationPageNoBtnEdit.setVisibility(View.GONE);
                 String customerBank = cursor.getString(cursor.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_CUST_BANK));
@@ -102,6 +113,7 @@ public class LoanApplicationStartFragment extends Fragment {
                 cursor.moveToFirst();
                 binding.loanApplicationPageNo.setText(String.valueOf(cursor.getInt(0) + 1));
             }
+            cursor.close();
         }
 
         binding.loanApplicationPageNoBtnEdit.setOnClickListener(view -> {
@@ -160,20 +172,67 @@ public class LoanApplicationStartFragment extends Fragment {
                     if(binding.loanApplicationPageNoEdit.getVisibility() == View.VISIBLE) {
                         String id = binding.loanApplicationPageNoEdit.getText().toString();
                         Cursor c = db.query(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION, null, "id = ?", new String[]{id}, null, null, null, null);
-
                         if(c.getCount() > 0) {
                             Toast.makeText(getContext(), "Page No / Book No is already used", Toast.LENGTH_SHORT).show();
                             return;
                         } else {
                             customerDetails.put(Constants.SQLiteDatabase.BANK_LOAN_APP_ID, id);
                         }
+                        c.close();
                     }
 
-                    if(!InMemoryInfo.loanPhotoUploadedFrom.isEmpty() && InMemoryInfo.loanPhotoUploadedFrom.equalsIgnoreCase("gallary")) {
+                    if(InMemoryInfo.loanPhotoUploadedFrom.equalsIgnoreCase("gallary")) {
                         bottomSheet.setmCurrentPhotoPath("file:" + Commons.saveImageView(getContext(), binding.customerPhoto));
                     }
                     customerDetails.put(Constants.SQLiteDatabase.BANK_LOAN_APP_PHOTO, bottomSheet.getmCurrentPhotoPath());
                     if(loanId != null) {
+                        // get items list
+                        Cursor c = db.query(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION_ITEMS, null, "loan_id = ?", new String[]{loanId}, null, null, null, null);
+                        if (c.getCount() > 0 &&
+                                (!existingData.get(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK).contentEquals(customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK)) ||
+                                        !existingData.get(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE).contentEquals(customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE)))) {
+
+
+                            final Map<String, ContentValues> itemsUpdates = new HashMap<>();
+                            Set<String> missingRates = new HashSet<>();
+                            while(c.moveToNext()) {
+                                Cursor c1 = db.query(Constants.SQLiteDatabase.TABLE_GOLD_RATES, null,
+                                        Constants.SQLiteDatabase.GOLD_RATES_BANK_COLUMN + " = ? AND " + Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE + " = ? AND " + Constants.SQLiteDatabase.GOLD_RATES_KARAT_COLUMN + " = ?",
+                                        new String[] {
+                                                customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK),
+                                                customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE),
+                                                c.getString(c.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_PURITY))
+                                        }, null, null, null, null);
+
+                                if(c1.getCount() > 0) {
+                                    c1.moveToLast();
+                                    ContentValues values = new ContentValues();
+                                    values.put(Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_RATE, c1.getFloat(c1.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_RATE_COLUMN)));
+                                    values.put(Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_RATE_DATETIME, c1.getString(c1.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_TIMESTAMP_COLUMN)));
+                                    values.put(Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_MARKET_VALUE,
+                                            Commons.amountBigDecimal(c1.getString(c1.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_RATE_COLUMN)))
+                                                    .multiply(Commons.amountBigDecimal(c.getString(c.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_NET_WT)))).toString());
+
+                                    itemsUpdates.put(c.getString(c.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_ID)), values);
+
+                                } else {
+                                    missingRates.add(c.getString(c.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_PURITY)) + "K");
+                                }
+                                c1.close();
+                            }
+                            if(c.getCount() == itemsUpdates.size()) {
+                                itemsUpdates.forEach((key, value) -> db.update(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION_ITEMS, value, "id = ?", new String[]{key}));
+                            } else {
+                                Commons.showAlertBox(getContext(), new StringBuilder("Gold rates not added for purity(s) ")
+                                        .append(String.join(", ", missingRates))
+                                        .append(" for ")
+                                        .append( customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE))
+                                        .append(" of ")
+                                        .append(customerDetails.getAsString(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK)).toString() , "Gold rate's issue", false);
+                                return;
+                            }
+                        }
+                        c.close();
                         db1.update(Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION, customerDetails, "id = ?", new String[]{loanId});
                         customerDetails.put(Constants.SQLiteDatabase.BANK_LOAN_APP_ID, Integer.valueOf(loanId));
                     } else {
@@ -213,14 +272,8 @@ public class LoanApplicationStartFragment extends Fragment {
                 binding.customerBankName.getText().toString().trim().contentEquals("")) {
             binding.customerBankName.setError("enter or select customer bank");
         }
-        if(binding.customerPhoto.getVisibility() == View.GONE) {
-            Toast.makeText(getContext(), "upload customer photo", Toast.LENGTH_SHORT).show();
-        }
         if(binding.loanApplicationBagNo.getText().toString().trim().contentEquals("")) {
             binding.loanApplicationBagNo.setError("enter bag / packet number");
-        }
-        if(binding.customerPhoto.getVisibility() == View.GONE) {
-            Toast.makeText(getContext(), "upload customer photo", Toast.LENGTH_SHORT).show();
         }
         if(binding.loanApplicationPageNoEdit.getVisibility() == View.VISIBLE && binding.loanApplicationPageNoEdit.getText().toString().trim().contentEquals("")) {
             binding.loanApplicationPageNoEdit.setError("Enter Page No / Book No");
@@ -228,7 +281,7 @@ public class LoanApplicationStartFragment extends Fragment {
         return binding.customerName.getError() == null && binding.customerAddress.getError() == null &&
                 binding.customerMobile.getError() == null && binding.customerBankAcc.getError() == null &&
                 binding.customerBankName.getError() == null && binding.jointCustody.getError() == null &&
-                binding.customerPhoto.getVisibility() != View.GONE && binding.loanApplicationPageNoEdit.getError() == null;
+                binding.loanApplicationPageNoEdit.getError() == null;
     }
 
     private void clearForm() {

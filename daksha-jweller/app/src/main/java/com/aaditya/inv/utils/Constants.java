@@ -8,6 +8,7 @@ public interface Constants {
 
     interface APIS_CONSTANTS {
         String API_HOST = "http://13.201.4.8/invapp";
+        String EVENT_API = "/loan_app/event_details";
     }
 
     List<String> RATE_DATA_COLUMNS = Arrays.asList(SQLiteDatabase.GOLD_RATES_RATE_COLUMN,
@@ -45,8 +46,7 @@ public interface Constants {
             SQLiteDatabase.BANK_LOAN_APP_ITEMS_MARKET_VALUE,
             SQLiteDatabase.CREATED_BY,
             SQLiteDatabase.CREATED_AT);
-    
-    String IS_ADMIN_KEY                     =  "A";
+
     String UTF_8_ENCODING                   = "UTF-8";
     String WORK_IN_PROGRESS_MSG             = "Work In-Progress";
     String ERROR_MESSAGE                    = "Something went wrong please try again";

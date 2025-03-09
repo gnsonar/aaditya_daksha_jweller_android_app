@@ -23,9 +23,7 @@ import com.aaditya.inv.models.LoanApplicationSearch;
 import com.aaditya.inv.utils.Commons;
 import com.aaditya.inv.utils.Constants;
 import com.aaditya.inv.utils.InMemoryInfo;
-import com.itextpdf.text.DocumentException;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
@@ -53,7 +51,7 @@ public class LoanApplicationViewsFragment extends Fragment {
         List<String> loanBankList = new ArrayList<>();
         loanBankList.add("All");
         loanBankList.addAll(InMemoryInfo.loanBankList);
-        binding.loanBanks.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, loanBankList));
+        binding.loanBanks.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, loanBankList));
 
         if(InMemoryInfo.loanAppSearchObject != null) {
             if(InMemoryInfo.loanAppSearchObject.getLoanId() != null && !InMemoryInfo.loanAppSearchObject.getLoanId().isEmpty())
@@ -111,11 +109,12 @@ public class LoanApplicationViewsFragment extends Fragment {
         if(InMemoryInfo.loanAppSearchObject.getLoanBank() != null && !InMemoryInfo.loanAppSearchObject.getLoanBank().isEmpty() && !InMemoryInfo.loanAppSearchObject.getLoanBank().contentEquals("All")) {
             whereClauses.add(Constants.SQLiteDatabase.BANK_LOAN_APP_BANK + SQLConstants.EQUAL_MARK + "\"" + InMemoryInfo.loanAppSearchObject.getLoanBank() + "\"");
         }
-        StringBuffer query = new StringBuffer(SQLConstants.SEARCH_LOAN_APPLICATION);
+        StringBuilder query = new StringBuilder(SQLConstants.SEARCH_LOAN_APPLICATION);
         if(!whereClauses.isEmpty()) {
-            query.append(SQLConstants.WHERE).append(whereClauses.stream().collect(Collectors.joining(SQLConstants.AND)));
+            query.append(SQLConstants.WHERE).append(String.join(SQLConstants.AND, whereClauses));
         }
-        Log.i("loan_views", "query: " + query.toString());
+        query.append(" ORDER BY " + Constants.SQLiteDatabase.CREATED_AT + " desc");
+        Log.i("loan_views", "query: " + query);
         Cursor cursor = db.rawQuery(query.toString(), null);
         if(cursor.getCount() > 0) {
             binding.noLoanAppViews.setVisibility(View.GONE);
@@ -151,12 +150,14 @@ public class LoanApplicationViewsFragment extends Fragment {
                     loanApp.put(Constants.SQLiteDatabase.LOAN_APPLICATION_TOTAL_AMOUNT, "0.0");
                     loanApp.put(Constants.SQLiteDatabase.LOAN_APPLICATION_SHOW_GEN_FORM, "false");
                 }
+                cursor1.close();
                 loanApplications.add(loanApp);
             }
         } else {
             binding.noLoanAppViews.setVisibility(View.VISIBLE);
         }
-        RecyclerView.Adapter items = new RecyclerViewAdapterLoanIViewsItem(loanApplications, getContext(), getActivity(), db);
+        cursor.close();
+        RecyclerView.Adapter<RecyclerViewAdapterLoanIViewsItem.ViewHolder> items = new RecyclerViewAdapterLoanIViewsItem(loanApplications, getContext(), getActivity(), db);
         binding.loanApplications.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.loanApplications.setAdapter(items);
     }

@@ -11,7 +11,7 @@ import com.aaditya.inv.utils.Constants;
 public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "internal_database.db";
 
     private static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + Constants.SQLiteDatabase.TABLE_NAME + " (" +
@@ -84,7 +84,14 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL("drop table " +  Constants.SQLiteDatabase.TABLE_NAME);
+        db.execSQL("drop table " +  Constants.SQLiteDatabase.TABLE_BANK_DETAILS);
+        db.execSQL("drop table " +  Constants.SQLiteDatabase.TABLE_GOLD_RATES);
+        db.execSQL("drop table " +  Constants.SQLiteDatabase.TABLE_GOLD_RATES_AUDIT);
+        db.execSQL("drop table " +  Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION);
+        db.execSQL("drop table " +  Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION_ITEMS);
+        onCreate(db);
 
     }
 }

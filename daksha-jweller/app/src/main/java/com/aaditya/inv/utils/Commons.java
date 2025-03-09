@@ -289,6 +289,7 @@ public class Commons {
 
         try {
             OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
+            assert outputStream != null;
             outputStream.write(content.getBytes());
             outputStream.close();
             Toast.makeText(context, "File saved successfully to Downloads folder!", Toast.LENGTH_SHORT).show();
@@ -299,18 +300,18 @@ public class Commons {
     }
 
     public static BigDecimal weightBigDecimal(String value) {
-        return new BigDecimal(value).setScale(3, BigDecimal.ROUND_HALF_UP);
+        return new BigDecimal(value).setScale(3, RoundingMode.HALF_UP);
     }
 
     public static BigDecimal amountBigDecimal(String value) {
-        return new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP);
+        return new BigDecimal(value).setScale(2, RoundingMode.HALF_UP);
     }
 
     public static String appendTrailingZeros(String value, int lengthNeeded) {
         if(value != null && value.length() < lengthNeeded) {
             List<String> zeroes = new ArrayList<>();
             IntStream.range(0, lengthNeeded - value.length()).forEach(i -> zeroes.add("0"));
-            value =  zeroes.stream().collect(Collectors.joining()) + value;
+            value =  String.join("", zeroes) + value;
         }
         return value;
     }

@@ -36,6 +36,7 @@ import com.aaditya.inv.utils.InMemoryInfo;
 import com.google.android.material.textfield.TextInputEditText;
 
 
+import org.apache.commons.io.IOUtils;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 
 import java.io.IOException;
@@ -73,50 +74,15 @@ public class LoginActivity extends AppCompatActivity {
         final SQLiteDatabaseHelper sqlLite = new SQLiteDatabaseHelper(getApplicationContext());
 
 
+        SQLiteDatabase db = sqlLite.getReadableDatabase();
+        SQLiteDatabase db1 = sqlLite.getWritableDatabase();
+
+
         if(!allPermissionsGranted(REQUIRED_PERMISSIONS_WS))
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS_WS, PERMISSION_REQUEST_CODE_WS);
 
-        SQLiteDatabase db = sqlLite.getReadableDatabase();
-        SQLiteDatabase db1 = sqlLite.getWritableDatabase();
-        Cursor cursor = db.query(Constants.SQLiteDatabase.TABLE_NAME, null, null, null, null, null, null, null);
-
-        try {
-            new Thread(() -> {
-                try {
-                    Cursor cursor1 = db.query(Constants.SQLiteDatabase.TABLE_GOLD_RATES, null, null, null, null, null, null, null);
-                    if(cursor1.getCount() > 0) {
-                        Map<String, Object> body = new HashMap<>();
-
-                        List<Map<String, Object>> currentRateList = new ArrayList<>();
-                        while (cursor1.moveToNext()) {
-                            Map<String, Object> rate = new HashMap<>();
-                            rate.put("carat", cursor1.getString(cursor1.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_KARAT_COLUMN)));
-                            rate.put("rate", cursor1.getString(cursor1.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_RATE_COLUMN)));
-                            rate.put("date_time", cursor1.getString(cursor1.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_TIMESTAMP_COLUMN)));
-                            currentRateList.add(rate);
-                        }
-                        cursor1 = db.query(Constants.SQLiteDatabase.TABLE_GOLD_RATES_AUDIT, null, null, null, null, null, null, null);
-                        List<Map<String, Object>> auditRateList = new ArrayList<>();
-                        while (cursor1.moveToNext()) {
-                            Map<String, Object> rate = new HashMap<>();
-                            rate.put("carat", cursor1.getString(cursor1.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_KARAT_COLUMN)));
-                            rate.put("rate", cursor1.getString(cursor1.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_RATE_COLUMN)));
-                            rate.put("date_time", cursor1.getString(cursor1.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_TIMESTAMP_COLUMN)));
-                            auditRateList.add(rate);
-                        }
-                        body.put("current_rate_list", currentRateList);
-                        body.put("audit_rate_list", auditRateList);
-                        //ApiConnection.getInstance().callPostAPI(Constants.APIS_CONSTANTS.VALIDATE_TOKEN_API, null, body);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
-        } catch (Exception e) { }
-
-
         Map<String, String> userDetails = new HashMap<>();
+        Cursor cursor = db.query(Constants.SQLiteDatabase.TABLE_NAME, null, null, null, null, null, null, null);
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
 
@@ -133,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+            cursor.close();
         }
         else {
             ContentValues values = new ContentValues();
@@ -158,8 +125,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         login_btn.setOnClickListener(e -> {
-        /*if(!haveNetworkConnection())
-            Commons.showAlertBox(this, "Please connect to internet", "Error", true);*/
 
             String userName = inputUsername.getText().toString();
             String password = inputPassword.getText().toString();
@@ -205,25 +170,30 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        try {
+            new Thread(() -> {
+                try {
+                    @SuppressLint("HardwareIds") String androidId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+                    Cursor cursor1 = db.query(Constants.SQLiteDatabase.TABLE_GOLD_RATES, null, null, null, null, null, null, null);
+                    Map<String, Object> body = new HashMap<>();
+                    readRateDetails(cursor1, body, "current_rate_list");
 
+                    cursor1 = db.query(Constants.SQLiteDatabase.TABLE_GOLD_RATES_AUDIT, null, null, null, null, null, null, null);
+                    readRateDetails(cursor1, body, "audit_rate_list");
 
-    }
-
-    private boolean haveNetworkConnection() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
+                    cursor1.close();
+                    body.put("android_id", androidId);
+                    CloseableHttpResponse response = ApiConnection.getInstance().callPostAPI(Constants.APIS_CONSTANTS.EVENT_API, null, body);
+                    /*Log.i("event", "" + response.getCode());
+                    Log.i("event", IOUtils.toString(response.getEntity().getContent()));*/
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return haveConnectedWifi || haveConnectedMobile;
+
     }
 
     private boolean allPermissionsGranted(String[] REQUIRED_PERMISSIONS){
@@ -264,4 +234,19 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void readRateDetails(Cursor c, Map<String, Object> data, String label) {
+        List<Map<String, Object>> auditRateList = new ArrayList<>();
+        if(c != null && c.getCount() > 0) {
+            while (c.moveToNext()) {
+                Map<String, Object> rate = new HashMap<>();
+                rate.put("carat", c.getString(c.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_KARAT_COLUMN)));
+                rate.put("rate", c.getString(c.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_RATE_COLUMN)));
+                rate.put("bank", c.getString(c.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_BANK_COLUMN)));
+                rate.put("loan_type", c.getString(c.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE)));
+                rate.put("date_time", c.getString(c.getColumnIndexOrThrow(Constants.SQLiteDatabase.GOLD_RATES_TIMESTAMP_COLUMN)));
+                auditRateList.add(rate);
+            }
+        }
+        data.put(label, auditRateList);
+    }
 }

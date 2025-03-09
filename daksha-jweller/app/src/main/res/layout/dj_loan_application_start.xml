@@ -389,10 +389,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:ems="10"
-                    android:textSize="15dp"
                     android:fontFamily="monospace"
                     android:hint="Bag No / Packet No"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:textSize="15dp" />
 
             </LinearLayout>
 

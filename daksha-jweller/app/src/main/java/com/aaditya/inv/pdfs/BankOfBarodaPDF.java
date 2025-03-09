@@ -91,7 +91,7 @@ public class BankOfBarodaPDF {
                 userImage.scaleToFit(150f, 100f);  // Scale image to fit within the cell
                 imageCell.setImage(userImage);
             } catch (IOException e) {
-                imageCell.addElement(new Paragraph("Image not found"));
+                imageCell.addElement(new Paragraph(""));
             }
             userTable.addCell(imageCell);
 
@@ -191,7 +191,7 @@ public class BankOfBarodaPDF {
 
     private static void addHeaderElementToTable(PdfPTable itemsTable, List<String> list, Font font) {
 
-        list.stream().forEach(column -> {
+        list.forEach(column -> {
             String[] columns = column.split(",");
             PdfPCell cell = new PdfPCell();
             if(columns.length == 1) {
