@@ -6,32 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aaditya.inv.R;
-import com.aaditya.inv.models.HomeMenuModel;
-import com.aaditya.inv.utils.Constants;
-import com.aaditya.inv.utils.InMemoryInfo;
 
 import java.util.List;
-import java.util.Map;
 
 public class RecyclerViewAdapterGoldRates extends RecyclerView.Adapter<RecyclerViewAdapterGoldRates.ViewHolder> {
 
-    private Context context;
-    private FragmentActivity fragmentActivity;
-    private List<Float[]> rateList;
+    private final List<Float[]> rateList;
 
-    public RecyclerViewAdapterGoldRates(List<Float[]> rateList, Context ctx, FragmentActivity fragmentActivity) {
+    public RecyclerViewAdapterGoldRates(List<Float[]> rateList) {
         this.rateList = rateList;
-        this.context = ctx;
-        this.fragmentActivity = fragmentActivity;
     }
 
     @NonNull

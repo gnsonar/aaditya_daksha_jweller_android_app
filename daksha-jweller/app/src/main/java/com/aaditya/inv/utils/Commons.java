@@ -283,9 +283,6 @@ public class Commons {
         values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/loan-app-data");
 
         Uri uri =  context.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI , values);
-        /*File f = new File(uri.toString());
-        if(!f.exists())
-            f.mkdir();*/
 
         try {
             OutputStream outputStream = context.getContentResolver().openOutputStream(uri);

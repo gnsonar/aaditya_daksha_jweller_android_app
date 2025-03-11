@@ -24,14 +24,11 @@ import java.util.Map;
 
 public class RecyclerViewAdapterHomeScreen extends RecyclerView.Adapter<RecyclerViewAdapterHomeScreen.ViewHolder> {
 
-    private Context context;
     private FragmentActivity fragmentActivity;
     private List<HomeMenuModel> menuList;
 
-    public RecyclerViewAdapterHomeScreen(List<HomeMenuModel> auditCardList,
-                                         Context ctx, FragmentActivity fragmentActivity){
+    public RecyclerViewAdapterHomeScreen(List<HomeMenuModel> auditCardList,FragmentActivity fragmentActivity){
         this.menuList = auditCardList;
-        this.context = ctx;
         this.fragmentActivity = fragmentActivity;
     }
 

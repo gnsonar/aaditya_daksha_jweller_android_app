@@ -32,13 +32,11 @@ import java.util.Map;
 
 public class RecyclerViewAdapterLoanIViewsItem extends RecyclerView.Adapter<RecyclerViewAdapterLoanIViewsItem.ViewHolder> {
     private Context context;
-    private FragmentActivity fragmentActivity;
     private List<Map<String, String>> loanApplications;
     private SQLiteDatabase db = null;
-    public RecyclerViewAdapterLoanIViewsItem(List<Map<String, String>> loanApplications, Context ctx, FragmentActivity fragmentActivity, SQLiteDatabase db) {
+    public RecyclerViewAdapterLoanIViewsItem(List<Map<String, String>> loanApplications, Context ctx, SQLiteDatabase db) {
         this.loanApplications = loanApplications;
         this.context = ctx;
-        this.fragmentActivity = fragmentActivity;
         this.db = db;
     }
 

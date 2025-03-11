@@ -157,7 +157,7 @@ public class LoanApplicationViewsFragment extends Fragment {
             binding.noLoanAppViews.setVisibility(View.VISIBLE);
         }
         cursor.close();
-        RecyclerView.Adapter<RecyclerViewAdapterLoanIViewsItem.ViewHolder> items = new RecyclerViewAdapterLoanIViewsItem(loanApplications, getContext(), getActivity(), db);
+        RecyclerView.Adapter<RecyclerViewAdapterLoanIViewsItem.ViewHolder> items = new RecyclerViewAdapterLoanIViewsItem(loanApplications, getContext(), db);
         binding.loanApplications.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.loanApplications.setAdapter(items);
     }

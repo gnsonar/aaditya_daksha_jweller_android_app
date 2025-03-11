@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
         mainMenu.add(new HomeMenuModel("View Loan Applications",  "view all loan applications", ContextCompat.getDrawable(getContext(), R.drawable.paymententries)));
 
         InMemoryInfo.loanAppSearchObject = null;
-        RecyclerView.Adapter<RecyclerViewAdapterHomeScreen.ViewHolder> mainMenuItems = new RecyclerViewAdapterHomeScreen(mainMenu, getContext(), getActivity());
+        RecyclerView.Adapter<RecyclerViewAdapterHomeScreen.ViewHolder> mainMenuItems = new RecyclerViewAdapterHomeScreen(mainMenu, getActivity());
         RecyclerView recyclerView = binding.homeMenus;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mainMenuItems);

@@ -1,51 +1,34 @@
 package com.aaditya.inv.ui.dj;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aaditya.inv.R;
-import com.aaditya.inv.custom.RecyclerViewAdapterGoldRates;
 import com.aaditya.inv.custom.RecyclerViewAdapterLoanItems;
 import com.aaditya.inv.databinding.DjLoanApplicationItemsBinding;
-import com.aaditya.inv.databinding.DjLoanApplicationItemsEntryBinding;
 import com.aaditya.inv.db.SQLiteDatabaseHelper;
 import com.aaditya.inv.dialogs.GoldRatesDialogFragment;
 import com.aaditya.inv.dialogs.LoanApplicationItemsPhotoDialogFragment;
 import com.aaditya.inv.utils.Commons;
 import com.aaditya.inv.utils.Constants;
 import com.aaditya.inv.utils.InMemoryInfo;
-import com.airbnb.lottie.LottieAnimationView;
-import com.itextpdf.text.DocumentException;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +78,7 @@ public class LoanApplicationItemsFragment extends Fragment {
                 binding.loanApplicationItemsTotalMktval.setText(Commons.convertNumberToINFormat(totalMarketValue.toString()));
 
 
-                RecyclerView.Adapter items = new RecyclerViewAdapterLoanItems(itemList, getContext(), getActivity());
+                RecyclerView.Adapter<RecyclerViewAdapterLoanItems.ViewHolder> items = new RecyclerViewAdapterLoanItems(itemList);
                 binding.loanApplicationItems.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                 binding.loanApplicationItems.setAdapter(items);
             }

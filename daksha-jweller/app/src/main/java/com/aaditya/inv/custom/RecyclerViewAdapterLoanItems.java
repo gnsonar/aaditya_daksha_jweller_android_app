@@ -24,14 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 public class RecyclerViewAdapterLoanItems extends RecyclerView.Adapter<RecyclerViewAdapterLoanItems.ViewHolder> {
-    private Context context;
-    private FragmentActivity fragmentActivity;
     private List<Map<String, String>> itemList;
 
-    public RecyclerViewAdapterLoanItems(List<Map<String, String>> itemList, Context ctx, FragmentActivity fragmentActivity) {
+    public RecyclerViewAdapterLoanItems(List<Map<String, String>> itemList) {
         this.itemList = itemList;
-        this.context = ctx;
-        this.fragmentActivity = fragmentActivity;
     }
 
     @NonNull

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
 
 import com.aaditya.inv.utils.Constants;
 
@@ -92,6 +91,5 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("drop table " +  Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION);
         db.execSQL("drop table " +  Constants.SQLiteDatabase.TABLE_LOAN_APPLICATION_ITEMS);
         onCreate(db);
-
     }
 }

@@ -64,7 +64,7 @@ public class ManageGoldRatesFragment extends Fragment {
         db = sqlLite.getReadableDatabase();
         List<Float[]> rateList = new ArrayList<>();
 
-        RecyclerView.Adapter goldRatesItems = new RecyclerViewAdapterGoldRates(rateList, getContext(), getActivity());
+        RecyclerView.Adapter goldRatesItems = new RecyclerViewAdapterGoldRates(rateList);
         binding.goldRateRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.goldRateRecyclerView.setAdapter(goldRatesItems);
 
