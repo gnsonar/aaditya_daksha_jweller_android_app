@@ -206,13 +206,24 @@ public class HomeFragment extends Fragment {
             List<Map<String, Object>> rateList = new ArrayList<>();
             while (cursor.moveToNext()) {
                 final Map<String, Object> rateData = new HashMap<>();
-                fields.forEach(field ->  rateData.put(field,  cursor.getString(cursor.getColumnIndexOrThrow(field))));
+                fields.forEach(field ->  rateData.put(field,  getColumnValue(cursor, field)));
                 rateList.add(rateData);
             }
             exportData.put(dataSet, rateList);
         }
     }
 
+    private Object getColumnValue(Cursor cursor, String field) {
+        String return_val = "";
+        if(Constants.AMOUNT_COLUMNS.contains(field)) {
+            return_val = Commons.amountBigDecimal(cursor.getString(cursor.getColumnIndexOrThrow(field))).toString();
+        } else if(Constants.WEIGHT_COLUMNS.contains(field)) {
+            return_val = Commons.weightBigDecimal(cursor.getString(cursor.getColumnIndexOrThrow(field))).toString();
+        } else {
+            return_val = cursor.getString(cursor.getColumnIndexOrThrow(field));
+        }
+        return return_val;
+    }
     private boolean importRecords(String table, List<Map<String, Object>> importDataList, List<String> skipFields) {
         Cursor c = db.query(table, null, null, null, null, null, null, null);
 

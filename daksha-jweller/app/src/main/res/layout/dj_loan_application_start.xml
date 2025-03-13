@@ -392,7 +392,7 @@
                     android:fontFamily="monospace"
                     android:hint="Bag No / Packet No"
                     android:inputType="number"
-                    android:maxLength="5"
+                    android:maxLength="7"
                     android:textSize="15dp" />
 
             </LinearLayout>

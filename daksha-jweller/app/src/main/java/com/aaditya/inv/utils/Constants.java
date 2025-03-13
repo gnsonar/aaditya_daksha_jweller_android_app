@@ -47,6 +47,10 @@ public interface Constants {
             SQLiteDatabase.CREATED_BY,
             SQLiteDatabase.CREATED_AT);
 
+    List<String> AMOUNT_COLUMNS = List.of(SQLiteDatabase.BANK_LOAN_APP_ITEMS_MARKET_VALUE);
+    List<String> WEIGHT_COLUMNS = List.of(SQLiteDatabase.BANK_LOAN_APP_ITEMS_GROSS_WT,
+            SQLiteDatabase.BANK_LOAN_APP_ITEMS_APPROX_WT,
+            SQLiteDatabase.BANK_LOAN_APP_ITEMS_NET_WT);
     String UTF_8_ENCODING                   = "UTF-8";
     String WORK_IN_PROGRESS_MSG             = "Work In-Progress";
     String ERROR_MESSAGE                    = "Something went wrong please try again";

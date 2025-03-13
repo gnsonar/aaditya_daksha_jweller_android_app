@@ -10,7 +10,7 @@ import com.aaditya.inv.utils.Constants;
 public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "internal_database.db";
 
     private static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + Constants.SQLiteDatabase.TABLE_NAME + " (" +
@@ -57,13 +57,13 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
             Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_LOAN_ID + " INT," +
             Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_ITEM_DESC + " TEXT," +
             Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_NO_ITEMS + " INT," +
-            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_GROSS_WT + " FLOAT," +
-            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_APPROX_WT + " FLOAT," +
-            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_NET_WT + " FLOAT," +
-            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_PURITY + " FLOAT," +
-            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_RATE + " FLOAT," +
+            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_GROSS_WT + " TEXT," +
+            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_APPROX_WT + " TEXT," +
+            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_NET_WT + " TEXT," +
+            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_PURITY + " TEXT," +
+            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_RATE + " TEXT," +
             Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_RATE_DATETIME + " TIMESTAMP," +
-            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_MARKET_VALUE + " FLOAT," +
+            Constants.SQLiteDatabase.BANK_LOAN_APP_ITEMS_MARKET_VALUE + " TEXT," +
             Constants.SQLiteDatabase.CREATED_BY + " TEXT," +
             Constants.SQLiteDatabase.CREATED_AT + " TIMESTAMP)";
 

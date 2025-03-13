@@ -1,5 +1,6 @@
 package com.aaditya.inv.ui.dj;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -44,6 +45,7 @@ import java.util.stream.Collectors;
 public class LoanApplicationItemsEntryFragment extends Fragment {
     private DjLoanApplicationItemsEntryBinding binding;
 
+    @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

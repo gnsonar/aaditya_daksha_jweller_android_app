@@ -28,20 +28,22 @@ public class BankOfBarodaPDF {
         if(loanApplicationDtl == null || loanAppItemsDetails == null || loanApplicationDtl.getCount() <= 0 || loanAppItemsDetails.getCount() <= 0)
             return;
 
+        int noOfBoxesPackettNo = 7;
         loanApplicationDtl.moveToFirst();
         String name = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_CUST_NAME));
 
         String address = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_CUST_ADDRESS));
         String mobileNo = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_MOBILE_NO));
         String accountNo = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_ACC_NO));
-        String packetNo = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_ID));
+        String packetNo = Commons.appendTrailingZeros(loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_BAG_PACKET_NO)), noOfBoxesPackettNo);
         String date = LocalDateTime.parse(loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.CREATED_AT))).format(DateTimeFormatter.ofPattern("dd/MM/YYYY"));
         String loanAmount = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_AMOUNT));
         String loanType = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_LOAN_TYPE));
 
         String imagePath = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_PHOTO));
         String imagePathItems = loanApplicationDtl.getString(loanApplicationDtl.getColumnIndexOrThrow(Constants.SQLiteDatabase.BANK_LOAN_APP_PACKET_PHOTO));
-
+        if(packetNo == null || packetNo.isEmpty())
+            packetNo = "       ";
 
         Document document = new Document();
         try {
@@ -61,7 +63,7 @@ public class BankOfBarodaPDF {
             // Heading
             font10Size.setStyle(Font.ITALIC);
             document.add(getHeadingParagraph("DAKSHA JEWELLERS", new Font(extraBold, 20), Element.ALIGN_CENTER));
-            document.add(getHeadingParagraph("Gandhi Market, Balaji Road, Shirpur", font10Size, Element.ALIGN_CENTER));
+            document.add(getHeadingParagraph("Saraf Bazar, Shirpur", font10Size, Element.ALIGN_CENTER));
             document.add(getHeadingParagraph("Tal Shirpur, Dist Dhule, 425 405", font10Size, Element.ALIGN_CENTER));
             font10Size.setStyle(Font.NORMAL);
 
